@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { NavLink } from 'react-router-dom';
 
 export const Container = styled.div`
@@ -14,24 +14,16 @@ export const Header = styled.header`
   margin-bottom: 20px;
 `;
 
-export const HeaderContainer = styled.div`
-  display: flex;
-  gap: 20px;
-  padding: 25px;
-  background-color: #93ec90;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
-  border-bottom: 1px solid #000;
-`;
-
-export const HeaderNavLink = styled(NavLink)`
-  color: #0f0e0e;
-  font-size: 20px;
-
+export const Link = styled(NavLink)`
+  display: inline-block;
   text-decoration: none;
+  padding: 14px;
+  margin-left: 10px;
+  font-weight: 600;
+  font-size: 22px;
+  color: #191d1e;
 
-  cursor: pointer;
-  &:hover,
-  &:focus {
-    color: #ffffff;
+  &:hover {
+    color: tomato;
   }
 `;

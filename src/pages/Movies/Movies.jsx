@@ -1,10 +1,39 @@
-
+import { useState } from 'react';
+import Loader from 'components/Loader/Loader';
+import EditorList from 'pages/EditorList/EditorList';
+import Form from 'components/Form/Form';
+import { fetchSearchByKeyword } from 'services/TmbdApi';
 
 const Movies = () => {
+  const [searchFilms, setSearchFilms] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [noMoviesText, setNoMoviesText] = useState(false);
+
+  const searchMovies = queryMovie => {
+    setLoading(true);
+
+    fetchSearchByKeyword(queryMovie)
+      .then(searchResults => {
+        setSearchFilms(searchResults);
+        setNoMoviesText(searchResults.length === 0);
+      })
+      .catch(error => {
+        console.log(error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
   return (
-    <>
-      <h1>Movies Page</h1>
-    </>
+    <main>
+      <Form searchMovies={searchMovies} />
+      {loading && <Loader />}
+      {noMoviesText && (
+        <p>There is no movies with this request. Please, try again</p>
+      )}
+      {searchFilms && <EditorList films={searchFilms} />}
+    </main>
   );
 };
 

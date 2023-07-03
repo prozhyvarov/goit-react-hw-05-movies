@@ -1,11 +1,8 @@
-import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { List, Item, MovieLink } from './EditorList.styled';
-import { fetchTrending } from '../../FetchApi/Api';
-import Loader from 'components/Loader/Loader';
 
-export const EditorList = ({ films }) => {
+const EditorList = ({ films }) => {
   const location = useLocation();
 
   return (
@@ -30,9 +27,4 @@ EditorList.propTypes = {
   ),
 };
 
-export const HomePage = () => {
-    return (
-      <>
-      </>
-    );
-}
+export default EditorList;
