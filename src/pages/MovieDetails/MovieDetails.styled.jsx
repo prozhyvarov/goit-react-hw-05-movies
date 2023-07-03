@@ -33,7 +33,7 @@ export const LinkInfo = styled(Link)`
   color: #191d1e;
 
   &:hover {
-    color: tomato;
+    color: #476fff;
   }
 `;
 
@@ -42,14 +42,14 @@ export const Button = styled.button`
   font: inherit;
   cursor: pointer;
   border-radius: 4px;
-  border: 3px solid #191d1e;
+  border: 2px solid #476fff;
+  background-color: transparent;
   color: #191d1e;
   font-weight: 600;
   font-size: 20px;
-  border-radius: 4px 8px;
 
   &:hover {
-    color: tomato;
-    border: 3px solid tomato;
+    color: #476fff;
+    border: 2px solid #476fff;
   }
 `;

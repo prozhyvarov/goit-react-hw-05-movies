@@ -10,16 +10,15 @@ export const Input = styled.input`
   font: inherit;
   cursor: pointer;
   border-radius: 4px;
-  border: 3px solid #191d1e;
+  border: 2px solid #191d1e;
   font-weight: 600;
   font-size: 20px;
   margin-right: 10px;
-  border-radius: 4px 8px;
   outline: none;
 
   &:hover {
-    color: tomato;
-    border: 3px solid tomato;
+    color: #476fff;
+    border: 2px solid #476fff;
   }
 `;
 
@@ -28,14 +27,13 @@ export const Button = styled.button`
   font: inherit;
   cursor: pointer;
   border-radius: 4px;
-  border: 3px solid #191d1e;
+  border: 2px solid #191d1e;
   color: #191d1e;
   font-weight: 600;
   font-size: 20px;
-  border-radius: 4px 8px;
 
   &:hover {
-    color: tomato;
-    border: 3px solid tomato;
+    color: #476fff;
+    border: 2px solid #476fff;
   }
 `;

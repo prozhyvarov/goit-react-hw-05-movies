@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link, Outlet, useLocation } from 'react-router-dom';
-import { fetchMovieDetails } from 'services/TmbdApi';
+import { fetchMovieDetails } from 'services/Api';
 import Loader from 'components/Loader/Loader';
 import {
   Container,
@@ -52,7 +52,7 @@ const MovieDetails = () => {
   return (
     <>
       <Link to={location.state?.from ?? '/'}>
-        <Button type="button">Go back</Button>
+        <Button type="button">← Go back</Button>
       </Link>
       {loading && <Loader />}
 
