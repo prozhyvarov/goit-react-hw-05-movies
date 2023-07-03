@@ -3,6 +3,7 @@ import { useLocation, useSearchParams } from 'react-router-dom';
 import { getDataByAxios } from 'sevices/library';
 import Search from 'components/Search/Search';
 import MovieList from 'components/MovieList/MovieList';
+import Notiflix from 'notiflix';
 
 const Movies = () => {
   const location = useLocation();
@@ -30,6 +31,11 @@ const Movies = () => {
   }, [paginationPage, searchText]);
 
   const handleSubmit = evt => {
+    if (!searchText) {
+      Notiflix.Notify.info(
+        'The search bar cannot be empty. Please type any criteria in the search bar.'
+      );
+    }
     evt.preventDefault();
     paginationPage = 1;
     let localValue = searchParams.get('search');
