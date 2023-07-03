@@ -8,6 +8,7 @@ const Movies = () => {
   const [searchFilms, setSearchFilms] = useState([]);
   const [loading, setLoading] = useState(false);
   const [noMoviesText, setNoMoviesText] = useState(false);
+  
 
   const searchMovies = queryMovie => {
     setLoading(true);

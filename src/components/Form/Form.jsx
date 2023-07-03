@@ -1,12 +1,20 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { SearchForm, Input, Button } from './Form.styled';
-import { useLocation } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
+// import { useLocation } from 'react-router-dom';
 
 const Form = ({ searchMovies }) => {
-  const location = useLocation();
-  console.log(location);
+  // const location = useLocation();
+  // console.log(location);
   const [query, setQuery] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
+   const movieName = searchParams.get('query') || '';
+
+  const updateQueryString = query => {
+    const nextParams = query !== '' && { query };
+    setSearchParams(nextParams);
+  };
 
   const handleInputChange = event => {
     setQuery(event.target.value);
@@ -18,7 +26,11 @@ const Form = ({ searchMovies }) => {
   };
 
   return (
-    <SearchForm onSubmit={handleSubmit}>
+    <SearchForm
+      onSubmit={handleSubmit}
+      value={movieName}
+      onChange={updateQueryString}
+    >
       <Input
         type="text"
         name="query"
