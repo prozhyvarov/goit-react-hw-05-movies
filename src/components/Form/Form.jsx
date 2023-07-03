@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { SearchForm, Input, Button } from './Form.styled';
+import { useLocation } from 'react-router-dom';
 
 const Form = ({ searchMovies }) => {
+  const location = useLocation();
+  console.log(location);
   const [query, setQuery] = useState('');
 
   const handleInputChange = event => {

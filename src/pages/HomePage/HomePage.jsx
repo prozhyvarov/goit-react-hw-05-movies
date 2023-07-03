@@ -3,7 +3,7 @@ import EditorList from 'pages/EditorList/EditorList';
 import { fetchTrending } from 'services/Api';
 import Loader from 'components/Loader/Loader';
 
-const Home = () => {
+const HomePage = () => {
   const [films, setFilms] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -36,4 +36,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HomePage;
