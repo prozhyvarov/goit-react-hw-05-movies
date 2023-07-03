@@ -1,0 +1,15 @@
+.buttonWrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.list {
+  list-style-type: none;
+  text-decoration: none;
+}
+
+.li {
+  text-decoration: none;
+}

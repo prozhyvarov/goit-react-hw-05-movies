@@ -1,54 +1,56 @@
-import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { fetchActors } from 'services/Api';
-import Loader from 'components/Loader/Loader';
-import { List, Text } from './Cast.styled';
+import { useParams } from 'react-router-dom';
+import { getDataByAxios } from 'sevices/library';
+import css from './Cast.module.css';
 
 const Cast = () => {
   const { movieId } = useParams();
-  const [actors, setActors] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [movieCast, setMovieCast] = useState([]);
+  const BASE_IMAGE_ENDPOINT = 'https://image.tmdb.org/t/p/w200/';
 
   useEffect(() => {
-    const onActorsOfMovie = () => {
-      setLoading(true);
-
-      fetchActors(movieId)
-        .then(actors => {
-          setActors(actors);
-        })
-        .catch(error => {
-          console.log(error);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    };
-
-    onActorsOfMovie();
+    getDataByAxios(`/movie/${movieId}/credits`, 0, '').then(resp => {
+      if (resp.status !== 200) {
+        throw new Error(resp.statusText);
+      } else {
+        setMovieCast(resp.data.cast);
+      }
+    });
   }, [movieId]);
 
   return (
     <div>
-      {loading && <Loader />}
-
-      <List>
-        {actors.map(({ id, profile_path, original_name, name, character }) => (
-          <li key={id}>
-            <img
-              width="200px"
-              src={
-                profile_path
-                  ? `https://image.tmdb.org/t/p/w500${profile_path}`
-                  : `https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg`
-              }
-              alt={original_name}
-            />
-            <Text>{name}</Text>
-            <Text>Character: {character}</Text>
-          </li>
-        ))}
-      </List>
+      {movieCast.length === 0 ? (
+        <h4 className={css.castTitle}>No cast available.</h4>
+      ) : (
+        <h4 className={css.castTitle}>Cast</h4>
+      )}
+      {movieCast.length && (
+        <ul className={css.castThumb}>
+          {movieCast.map(({ character, id, name, profile_path }) => (
+            <li key={id} className={css.castActorCard}>
+              {profile_path ? (
+                <img
+                  src={BASE_IMAGE_ENDPOINT + profile_path}
+                  alt="Cast actor "
+                  width="180"
+                  height="270"
+                />
+              ) : (
+                <img
+                  className={css.castBlankImage}
+                  src=""
+                  alt="Cast actor (no poster) "
+                  width="180"
+                  height="270"
+                />
+              )}
+              {name}
+              <p>Caracter: {character}</p>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };

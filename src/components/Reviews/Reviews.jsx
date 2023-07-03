@@ -1,52 +1,42 @@
-import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { fetchReviews } from 'services/Api';
-import Loader from 'components/Loader/Loader';
-import { List } from './Reviews.styled';
+import { useParams } from 'react-router-dom';
+import { getDataByAxios } from 'sevices/library';
+import css from './Reviews.module.css';
 
 const Reviews = () => {
   const { movieId } = useParams();
-  const [reviews, setReviews] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [movieRevews, setMovieReviews] = useState([]);
 
   useEffect(() => {
-    const fetchReviewsFilms = () => {
-      setLoading(true);
-
-      fetchReviews(movieId)
-        .then(reviews => {
-          setReviews(reviews);
-        })
-        .catch(error => {
-          console.log(error);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    };
-
-    fetchReviewsFilms();
+    getDataByAxios(`/movie/${movieId}/reviews`, 0, '').then(resp => {
+      if (resp.status !== 200) {
+        throw new Error(resp.statusText);
+      } else {
+        setMovieReviews(resp.data.results);
+      }
+    });
   }, [movieId]);
 
   return (
-    <>
-      {loading && <Loader />}
-      {reviews.length !== 0 && (
-        <div>
-          <List>
-            {reviews.map(review => (
-              <li key={review.id}>
-                <h2>Author: {review.author}</h2>
-                <p>{review.content}</p>
-              </li>
-            ))}
-          </List>
-        </div>
+    <div>
+      {movieRevews.length === 0 ? (
+        <h4 className={css.reviewsTitle}>
+          We don't have any reviews for this movie.
+        </h4>
+      ) : (
+        <h4 className={css.reviewsTitle}>Reviews</h4>
       )}
-      {reviews.length === 0 && (
-        <div>We don't have any reviews for this movie</div>
+      {movieRevews.length && (
+        <ul className={css.list}>
+          {movieRevews.map(({ id, author, content }) => (
+            <li key={id}>
+              <h4>Author: {author}</h4>
+              <p>{content}</p>
+            </li>
+          ))}
+        </ul>
       )}
-    </>
+    </div>
   );
 };
 

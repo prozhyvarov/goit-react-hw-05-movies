@@ -1,22 +1,18 @@
-import { Suspense } from 'react';
+import { Suspense, lazy } from 'react';
 import { Outlet } from 'react-router-dom';
-import Loader from 'components/Loader/Loader';
-import { Container, Header, Link } from './Layout.styled';
-export const Layout = () => {
-  return (
-    <Container>
-      <Header>
-        <nav>
-          <Link to="/" end>
-            Home
-          </Link>
-          <Link to="/movies">Movies</Link>
-        </nav>
-      </Header>
+import { Toaster } from 'react-hot-toast';
 
-      <Suspense fallback={<Loader />}>
+const Header = lazy(() => import('components/Header/Header'));
+
+const Layout = () => {
+  return (
+    <div>
+      <Toaster position="top-right" toastOptions={{ duration: 1500 }} />
+      <Suspense>
+        <Header />
         <Outlet />
       </Suspense>
-    </Container>
+    </div>
   );
 };
+export default Layout;
