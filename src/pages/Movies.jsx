@@ -4,12 +4,13 @@ import { getDataByAxios } from 'sevices/library';
 import Search from 'components/Search/Search';
 import MovieList from 'components/MovieList/MovieList';
 import Notiflix from 'notiflix';
+import Loader from 'components/Loader/Loader';
 
 const Movies = () => {
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
   //console.log('searchParams :>> ', Object.fromEntries([...searchParams]));
-
+  const [isLoading, setIsLoading] = useState(false);
   const [movieList, setMovieList] = useState([]);
   const [searchText, setSearchText] = useState(
     searchParams.get('search') ?? ''
@@ -20,12 +21,14 @@ const Movies = () => {
   let title = '';
 
   useEffect(() => {
+    setIsLoading(true);
     getDataByAxios(`/search/movie`, paginationPage, searchText).then(resp => {
       if (resp.status !== 200) {
         throw new Error(resp.statusText);
       } else {
         totalPages.current = resp.data.total_pages;
         setMovieList(resp.data.results);
+        setIsLoading(false);
       }
     });
   }, [paginationPage, searchText]);
@@ -70,6 +73,7 @@ const Movies = () => {
 
   return (
     <div>
+      {isLoading && <Loader />}
       <Search
         handleSubmit={handleSubmit}
         handleSearchInputChange={handleSearchInputChange}

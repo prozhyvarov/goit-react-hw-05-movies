@@ -10,6 +10,7 @@ const Reviews = lazy(() => import('./Reviews/Reviews'));
 
 const App = () => {
   return (
+    
     <Routes>
       <Route
         path="/"

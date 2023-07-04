@@ -2,19 +2,25 @@ import { Suspense, useEffect, useState } from 'react';
 import { useParams, useLocation, Link, Outlet } from 'react-router-dom';
 import { getDataByAxios } from 'sevices/library';
 import css from './MovieDetails.module.css';
+import Loader from 'components/Loader/Loader';
+import defaultImg from '../images/image.webp';
 
 const MovieDetails = () => {
   const [movieData, setMovieData] = useState({});
   const { movieId } = useParams();
   const BASE_IMAGE_ENDPOINT = 'https://image.tmdb.org/t/p/w500';
+  const [isLoading, setIsLoading] = useState(false);
   const location = useLocation();
+  const backLink = location.state?.from ?? '/';
 
   useEffect(() => {
+    setIsLoading(true);
     getDataByAxios(`/movie/${movieId}`, 0, '').then(resp => {
       if (resp.status !== 200) {
         throw new Error(resp.statusText);
       } else {
         setMovieData(resp.data);
+        setIsLoading(false);
       }
     });
   }, [movieId]);
@@ -29,14 +35,17 @@ const MovieDetails = () => {
   } = movieData;
 
   const pathToPoster = BASE_IMAGE_ENDPOINT + poster_path;
+  
+  const imgSrc = movieData.poster_path ? pathToPoster : defaultImg;
 
   return (
     <>
-      <Link className={css.linkAdditional} to={location.state}>
+      {isLoading && <Loader />}
+      <Link className={css.linkAdditional} to={backLink}>
         &#8592; Go back
       </Link>
       <div className={css.movieCard}>
-        {poster_path && <img src={pathToPoster} alt="Poster" width="340" />}
+        {poster_path && <img src={imgSrc} alt="Poster" width="250" />}
         <div>
           <h2>
             {original_title} ({release_date && release_date.slice(0, 4)})

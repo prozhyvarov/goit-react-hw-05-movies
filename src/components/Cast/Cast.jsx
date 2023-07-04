@@ -2,24 +2,29 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getDataByAxios } from 'sevices/library';
 import css from './Cast.module.css';
+import Loader from 'components/Loader/Loader';
 
 const Cast = () => {
   const { movieId } = useParams();
   const [movieCast, setMovieCast] = useState([]);
+  const [isLoading, setIsLoading] = useState(false); 
   const BASE_IMAGE_ENDPOINT = 'https://image.tmdb.org/t/p/w200/';
 
   useEffect(() => {
+    setIsLoading(true);
     getDataByAxios(`/movie/${movieId}/credits`, 0, '').then(resp => {
       if (resp.status !== 200) {
         throw new Error(resp.statusText);
       } else {
         setMovieCast(resp.data.cast);
+        setIsLoading(false);
       }
     });
   }, [movieId]);
 
   return (
     <div>
+      {isLoading && <Loader />}
       {movieCast.length === 0 ? (
         <h4 className={css.castTitle}>No cast available.</h4>
       ) : (

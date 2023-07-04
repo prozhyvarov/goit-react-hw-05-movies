@@ -2,12 +2,14 @@ import { useEffect, useState, useRef } from 'react';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import { getDataByAxios } from 'sevices/library';
 import MovieList from 'components/MovieList/MovieList';
+import Loader from 'components/Loader/Loader';
 
 const Home = () => {
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
   const [movieList, setMovieList] = useState([]);
   const totalPages = useRef(0);
+  const [isLoading, setIsLoading] = useState(false);
 
   let paginationPage = Number(searchParams.get('page'));
   if (paginationPage === 0) {
@@ -15,12 +17,14 @@ const Home = () => {
   }
 
   useEffect(() => {
+    setIsLoading(true);
     getDataByAxios(`/trending/movie/week`, paginationPage).then(resp => {
       if (resp.status !== 200) {
         throw new Error(resp.statusText);
       } else {
         totalPages.current = resp.data.total_pages;
         setMovieList(resp.data.results);
+        setIsLoading(false);
       }
     });
   }, [paginationPage]);
@@ -44,6 +48,7 @@ const Home = () => {
 
   return (
     <div>
+      {isLoading && <Loader />}
       <h3>{title}</h3>
       {movieList.length !== 0 && (
         <MovieList
