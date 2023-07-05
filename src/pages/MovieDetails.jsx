@@ -8,7 +8,7 @@ import defaultImg from '../images/image.webp';
 const MovieDetails = () => {
   const [movieData, setMovieData] = useState({});
   const { movieId } = useParams();
-  const BASE_IMAGE_ENDPOINT = 'https://image.tmdb.org/t/p/w500';
+  const BASE_IMAGE_ENDPOINT = 'https://imae.tmdb.org/t/p/w500';
   const [isLoading, setIsLoading] = useState(false);
   const location = useLocation();
   const backLink = location.state?.from ?? '/';
@@ -35,8 +35,9 @@ const MovieDetails = () => {
   } = movieData;
 
   const pathToPoster = BASE_IMAGE_ENDPOINT + poster_path;
-  
-  const imgSrc = movieData.poster_path ? pathToPoster : defaultImg;
+  // console.log(movieData.poster_path);
+  const imgSrc = poster_path ? pathToPoster : defaultImg;
+  console.log(imgSrc);
 
   return (
     <>
@@ -45,7 +46,7 @@ const MovieDetails = () => {
         &#8592; Go back
       </Link>
       <div className={css.movieCard}>
-        {poster_path && <img src={imgSrc} alt="Poster" width="250" />}
+        <img src={imgSrc} alt="Poster" width="250" />
         <div>
           <h2>
             {original_title} ({release_date && release_date.slice(0, 4)})
