@@ -8,7 +8,7 @@ import defaultImg from '../images/image.webp';
 const MovieDetails = () => {
   const [movieData, setMovieData] = useState({});
   const { movieId } = useParams();
-  const BASE_IMAGE_ENDPOINT = 'https://imae.tmdb.org/t/p/w500';
+  const BASE_IMAGE_ENDPOINT = 'https://image.tmdb.org/t/p/w500';
   const [isLoading, setIsLoading] = useState(false);
   const location = useLocation();
   const backLink = location.state?.from ?? '/';
@@ -16,6 +16,7 @@ const MovieDetails = () => {
   useEffect(() => {
     setIsLoading(true);
     getDataByAxios(`/movie/${movieId}`, 0, '').then(resp => {
+      setIsLoading(false);
       if (resp.status !== 200) {
         throw new Error(resp.statusText);
       } else {
@@ -34,10 +35,11 @@ const MovieDetails = () => {
     vote_average,
   } = movieData;
 
+  const userScr = ((vote_average / 10) * 100).toFixed(0);
+
   const pathToPoster = BASE_IMAGE_ENDPOINT + poster_path;
-  // console.log(movieData.poster_path);
   const imgSrc = poster_path ? pathToPoster : defaultImg;
-  console.log(imgSrc);
+  // console.log(imgSrc);
 
   return (
     <>
@@ -51,9 +53,7 @@ const MovieDetails = () => {
           <h2>
             {original_title} ({release_date && release_date.slice(0, 4)})
           </h2>
-          <p className={css.descrText}>
-            User Score: {((vote_average / 10) * 100).toFixed(0)}%
-          </p>
+          <p className={css.descrText}>User Score: {userScr}%</p>
           <h3>Owerview</h3>
           <p className={css.descrText}>{overview}</p>
           <h3>Genres</h3>

@@ -34,7 +34,8 @@ const Movies = () => {
   }, [paginationPage, searchText]);
 
   const handleSubmit = evt => {
-    if (!searchText) {
+    const searchValue = evt.target[0].value.trim();
+    if (!searchValue) {
       Notiflix.Notify.info(
         'The search bar cannot be empty. Please type any criteria in the search bar.'
       );

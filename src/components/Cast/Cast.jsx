@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { getDataByAxios } from 'sevices/library';
 import css from './Cast.module.css';
 import Loader from 'components/Loader/Loader';
+import defaultImg from '../../images/image.webp';
 
 const Cast = () => {
   const { movieId } = useParams();
@@ -13,6 +14,7 @@ const Cast = () => {
   useEffect(() => {
     setIsLoading(true);
     getDataByAxios(`/movie/${movieId}/credits`, 0, '').then(resp => {
+      setIsLoading(false);
       if (resp.status !== 200) {
         throw new Error(resp.statusText);
       } else {
@@ -21,6 +23,8 @@ const Cast = () => {
       }
     });
   }, [movieId]);
+
+   
 
   return (
     <div>
@@ -36,7 +40,11 @@ const Cast = () => {
             <li key={id} className={css.castActorCard}>
               {profile_path ? (
                 <img
-                  src={BASE_IMAGE_ENDPOINT + profile_path}
+                  src={
+                    profile_path
+                      ? BASE_IMAGE_ENDPOINT + profile_path
+                      : defaultImg
+                  }
                   alt="Cast actor "
                   width="180"
                   height="270"
@@ -44,7 +52,7 @@ const Cast = () => {
               ) : (
                 <img
                   className={css.castBlankImage}
-                  src=""
+                  src={defaultImg}
                   alt="Cast actor (no poster) "
                   width="180"
                   height="270"
